@@ -11,7 +11,7 @@ output: html_document
 
 1. Load the data
 
-```{r}
+```{r echo=TRUE}
 # set working directory
 setwd("/Users/MichiFede/Desktop/Coursera/Reproducible Research/RepData_PeerAssessment1")
 # read data and safe to my data variable
@@ -31,14 +31,14 @@ I will transform the data further on, as soon as i know what data is needed and 
 ### For this part of the assignment, you can ignore the missing values in the dataset.
 
 1. Calculate the total number of steps taken per day
-```{r}
+```{r echo=TRUE}
 # aggregate my data by date summing steps
 steps_day <- aggregate(steps ~ date, data=mydata, sum, na.rm=TRUE)
 head(steps_day)
 ```
 
 2. If you do not understand the difference between a histogram and a barplot, research the difference between them. Make a histogram of the total number of steps taken each day
-```{r}
+```{r echo=TRUE}
 library(ggplot2)
 # we draw a histogram showing the amount of cases for every different amouont of stept per date and save this plot to variable p1
 p1 <- qplot(steps_day$steps, geom="histogram", binwidth=500) + 
@@ -59,11 +59,11 @@ grid.arrange(p1,p2, ncol=2)
 ```
 
 3. Calculate and report the mean and median of the total number of steps taken per day
-```{r}
+```{r echo=TRUE}
 mean_without_NA <- mean(steps_day$steps)
 median_without_NA <- median(steps_day$steps)
 ```
-```{r}
+```{r echo=TRUE}
 mean_without_NA
 median_without_NA
 ```
@@ -73,7 +73,7 @@ We see that the median for the total numbers of steps taken per day is 10765 and
 ## What is the average daily activity pattern?
 
 1. Make a time series plot of the 5-minute interval and the average number of steps taken, averaged across all days.
-```{r}
+```{r echo=TRUE}
 # we aggregate the avarage amount of steps per interval
 steps_interval <- aggregate(mydata$steps, 
                        by=list(mydata$interval), 
@@ -84,10 +84,10 @@ names(steps_interval)<-c("Interval", "StepsMean")
 ```
 
 Here you see how the new dataset looks like:
-```{r}
+```{r echo=TRUE}
 head(steps_interval)
 ```
-```{r}
+```{r echo=TRUE}
 # we plot a line-chart showing the mean of the steps over the various time intervals
 plot(steps_interval$Interval, steps_interval$StepsMean,  
      type="l", col="red", lwd=2, 
@@ -97,7 +97,7 @@ plot(steps_interval$Interval, steps_interval$StepsMean,
 ```
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
-```{r}
+```{r echo=TRUE}
 # we look for the index of the row containing the maximum value for the avarage amount of steps
 max_index <- which.max(steps_interval$StepsMean)
 
@@ -113,7 +113,7 @@ We see that the maximum mean value per time interface is of 835 stept in 5 minut
 ### Note that there are a number of days/intervals where there are missing values. The presence of missing days may introduce bias into some calculations or summaries of the data.
 
 1. Calculate and report the total number of missing values in the dataset.
-```{r}
+```{r echo=TRUE}
 # we count the amount of non complete cases with this formula:
 sum(!complete.cases(mydata))
 ```
@@ -125,7 +125,7 @@ There are 2304 rows with missing values out od the 17568 rows.
 We wille compute the mean for all time interval, without counting the NA values and impute those values to the NA values beeing in that same category.
 
 3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
-```{r}
+```{r echo=TRUE}
 # we create a second data set equal to mydata
 mydata2 <- mydata
 
@@ -145,7 +145,7 @@ head(mydata2)
 In the new dataset we see that the missing values we had before are now substitudes by valid values.
 
 4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
-```{r}
+```{r echo=TRUE}
 library(ggplot2)
 # we create a hitogram identical to the one we created before but with the new dataset, containing imputed values instead of NA's
 steps_day2 <- aggregate(steps ~ date, data=mydata2, sum)
@@ -161,7 +161,7 @@ grid.arrange(p1,hist_end, ncol=2)
 
 We see that the two histograms differ, altough it's not yet clear in what the difference exaclty consist.
 
-```{r}
+```{r echo=TRUE}
 # we calculate the new values for the mean and the median
 mean_NA_replaced <- mean(steps_day2$steps)
 median_NA_replaced <- median(steps_day2$steps)
@@ -170,7 +170,7 @@ median_NA_replaced <- median(steps_day2$steps)
 mean <- cbind(mean_without_NA, mean_NA_replaced)
 median <- cbind(median_without_NA, median_NA_replaced)
 ```
-```{r}
+```{r echo=TRUE}
 mean
 median
 ```
@@ -182,7 +182,7 @@ We see that the mean value had increased with more than 100 steps and the median
 ### For this part the weekdays() function may be of some help here. Use the dataset with the filled-in missing valies for this part.
 
 1. Create a new factor variable in the dataset with two levels ??? *weekday* and *weekend* indicating whether a given date is a weekday or weekend day.
-```{R}
+```{r echo=TRUE}
 # we use the lubridata package to transform the factor date in date format
 library(lubridate)
 
@@ -197,7 +197,7 @@ head(mydata2)
 ```
 
 2. Make a panel plot containing a time series plot (i.e. ???????????????? = "????") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis)
-```{R}
+```{r echo=TRUE}
 # we aggregate the data calculating the mean for every combination of interval + weekpart
 steps_interval_end <- aggregate(mydata2$steps, 
                        by=list(mydata2$interval,mydata2$weekpart), 
